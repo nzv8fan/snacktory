@@ -21,27 +21,49 @@ import org.jsoup.nodes.TextNode;
 public class OutputFormatter {
 
     public static final int MIN_PARAGRAPH_TEXT = 50;
-    private static final List<String> NODES_TO_REPLACE = Arrays.asList("strong", "b", "i");
+//    private static final List<String> NODES_TO_REPLACE = Arrays.asList("strong", "b", "i");
     private Pattern unlikelyPattern = Pattern.compile("display\\:none|visibility\\:hidden");
     protected final int minParagraphText;
-    protected final List<String> nodesToReplace;
+//    protected final List<String> nodesToReplace;
     protected String nodesToKeepCssSelector = "p";
 
+    /**
+     * Default constructor for a new OutputFormatter object.
+     * Sets the minimum length of a string between any two "p" tags as being the value
+     * set in the static field MIN_PARAGRAPH_TEXT which by default is 50.
+     */
     public OutputFormatter() {
-        this(MIN_PARAGRAPH_TEXT, NODES_TO_REPLACE);
-    }
-
-    public OutputFormatter(int minParagraphText) {
-        this(minParagraphText, NODES_TO_REPLACE);
-    }
-
-    public OutputFormatter(int minParagraphText, List<String> nodesToReplace) {
-        this.minParagraphText = minParagraphText;
-        this.nodesToReplace = nodesToReplace;
+        //this(MIN_PARAGRAPH_TEXT, NODES_TO_REPLACE);
+        this(MIN_PARAGRAPH_TEXT);
     }
 
     /**
-     * set elements to keep in output text
+     * Constructor for a new OutputFormatter object which takes in the minimum length of the string between any two
+     * "p" tags to keep in the extracted article.
+     * @param minParagraphText The minimum length of any string between any two "p" tags to keep.
+     */
+    public OutputFormatter(int minParagraphText) {
+        //this(minParagraphText, NODES_TO_REPLACE);
+        this.minParagraphText = minParagraphText;
+    }
+
+    /**
+     * Constructor for a new OutputFormatter object takes two vital parameters
+     * @param minParagraphText The minimum length of any string between two "p" tags to keep as a piece of the text content.
+     * @param nodesToReplace A list of tags that could appear between two "p" tags that need to be removed, e.g. Arrays.asList("strong", "b", "i")
+     *                       It's not clear if this field is used.
+     */
+    /*public OutputFormatter(int minParagraphText, List<String> nodesToReplace) {
+        this.minParagraphText = minParagraphText;
+//        this.nodesToReplace = nodesToReplace;
+    }*/
+
+    /**
+     * Sets the JSoup Selector String for what content to keep when we strip the html down to p tags only.
+     * By default this is just any p tags but you can override this, for instance, finding any p tags that don't
+     * have an em tag belong them: "p:not(:has(em))"
+     * More information on the selector syntax can be found here: https://jsoup.org/apidocs/org/jsoup/select/Selector.html
+     * @param nodesToKeepCssSelector A JSoup Selector String
      */
     public void setNodesToKeepCssSelector(String nodesToKeepCssSelector) {
         this.nodesToKeepCssSelector = nodesToKeepCssSelector;
