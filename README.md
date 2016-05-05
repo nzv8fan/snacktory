@@ -2,15 +2,43 @@
 
 This is a fork of Snacktory with some functionality added, some removed and hopefully a lot more documentation of the methods. 
 
-The original Snacktory repository is here: https://github.com/karussell/snacktory and the rest of this Readme is from there. 
+# Usage
+
+Clone the repository and using maven either build the project into a JAR file or copy the source files and maven dependencies across into your project. 
+
+ Now you can use it as follows:
+ 
+ ```java
+ // you'll need to set these two variables to values appropriate to your needs. :
+ int minParagraphLength = 40;          // the minimum length of a string between <p> and </p> tags to keep.
+ String htmlSource = "<html></html>";  // this should be a full html document,
+                                       // you can also use the HtmlFetcher class to get a document for you. 
+ 
+// Create a new ArticleTextExtractor from Snacktory
+ArticleTextExtractor ate = new ArticleTextExtractor();
+
+// Create an output formatter object for use in extracting the main article text.
+OutputFormatter formatter = new OutputFormatter(minParagraphLength);
+
+// We can set the JSoup selector for what we are looking for in the structure 
+// of the <p> tags in the document we want to extract from.
+// For instance skip any paragraphs containing <em> tags:
+formatter.setNodesToKeepCssSelector("p:not(:has(em))");
+
+// Run Snacktory's extract content method using out output formatter
+JResult parsedDocument = ate.extractContent(row.getString("raw_data"), formatter);
+
+// get the body content out of the result object
+String bodyText = parsedDocument.getText();
+```
+
+# Project Overview
+
+The original Snacktory repository is here: https://github.com/karussell/snacktory and the most of the rest of this Readme is from there. 
 
 This is a small helper utility for people who don't want to write yet another java clone of Readability.
 In most cases, this is applied to articles, although it should work for any website to find its major
 area, extract its text, keywords, its main picture and more.
-
-The resulting quality is high, even [paper.li uses](https://twitter.com/timetabling/status/274193754615853056) the core of snacktory.
-Also have a look into [this article](http://karussell.wordpress.com/2011/07/12/introducing-jetslide-news-reader/), 
-it describes a news aggregator service which uses snacktory. But jetslide is no longer online.
 
 Snacktory borrows some ideas and a lot of test cases from [goose](https://github.com/GravityLabs/goose) 
 and [jreadability](https://github.com/ifesdjeen/jReadability):
@@ -36,20 +64,7 @@ TODOs
  * only top text supported at the moment
 
 
-# Usage
-
- Include the repo at: https://github.com/karussell/mvnrepo
-
- Then add the dependency
- 
- ```xml
- <dependency>
-    <groupId>de.jetwick</groupId>
-    <artifactId>snacktory</artifactId>
-    <version>1.1</version>
-    <!-- or if you prefer the latest build <version>1.2-SNAPSHOT</version> -->
- </dependency>
- ```
+# General Usage
 
  If you need this for Android be sure you read [this issue](https://github.com/karussell/snacktory/issues/36).
 
