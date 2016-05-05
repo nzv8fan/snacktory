@@ -1,4 +1,8 @@
-# Snacktory
+# A fork of Snacktory
+
+This is a fork of Snacktory with some functionality added, some removed and hopefully a lot more documentation of the methods. 
+
+The original Snacktory repository is here: https://github.com/karussell/snacktory and the rest of this Readme is from there. 
 
 This is a small helper utility for people who don't want to write yet another java clone of Readability.
 In most cases, this is applied to articles, although it should work for any website to find its major
