@@ -22,7 +22,8 @@ import org.slf4j.LoggerFactory;
  * This class is thread safe.
  *
  * @author Alex P (ifesdjeen from jreadability)
- * @author Peter Karich
+ * @author Peter Karich (https://github.com/karussell)
+ * @author Brad Heap
  */
 public class ArticleTextExtractor {
 
@@ -49,6 +50,11 @@ public class ArticleTextExtractor {
     private static final OutputFormatter DEFAULT_FORMATTER = new OutputFormatter();
     private OutputFormatter formatter = DEFAULT_FORMATTER;
 
+    /**
+     * Constructor for a new ArticleTextExtractor object.
+     * Sets some patterns for what content in a webpage is likely/not likely to contain the main
+     * text
+     */
     public ArticleTextExtractor() {
         setUnlikely("com(bx|ment|munity)|dis(qus|cuss)|e(xtra|[-]?mail)|foot|"
                 + "header|menu|re(mark|ply)|rss|sh(are|outbox)|sponsor"
@@ -125,6 +131,28 @@ public class ArticleTextExtractor {
         return extractContent(res, Jsoup.parse(html), formatter);
     }
 
+    /**
+     * Method to extract the main content an html String using the supplied OutputFormatter
+     * @param html A string containing an HTML document.
+     * @param formatter An OutputFormatter Object to guide the extraction of the correct content
+     * @return A JResult object containing the relevant extracted content
+     * @throws Exception
+     */
+    public JResult extractContent(String html, OutputFormatter formatter) throws Exception {
+        if (html.isEmpty())
+            throw new IllegalArgumentException("html string is empty!?");
+
+        return extractContent(new JResult(), Jsoup.parse(html), formatter);
+    }
+
+    /**
+     * Method to extract the main content an html String using the supplied OutputFormatter
+     * @param res A JResult object to write the output to.
+     * @param doc A parsed JSoup document.
+     * @param formatter An OutputFormatter Object to guide the extraction of the correct content
+     * @return A JResult object containing the relevant extracted content
+     * @throws Exception
+     */
     public JResult extractContent(JResult res, Document doc, OutputFormatter formatter) throws Exception {
         if (doc == null)
             throw new NullPointerException("missing document");
